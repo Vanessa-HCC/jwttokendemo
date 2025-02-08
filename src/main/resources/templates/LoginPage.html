@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-hant-TW" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOGIN</title>
+  </head>
+  <body>
+	<form id="loginForm">
+		<table class="px-1 border border-gray-600">
+			<tbody>
+				<tr>
+					<th class="p-1">username</th>
+					<td>
+						<input type="text" name="username" id="username" placeholder="enter your EMAIL" required class="px-4 m-1" />
+					</td>
+				</tr>
+				<tr>
+					<th class="p-1">password</th>
+					<td>
+						<input type="password" name="password" id="password" placeholder="enter your password" required class="px-4 m-1" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	
+		<button type="submit" class="m-1 px-2 bg-gray-200 rounded">login</button>		
+	</form>
+	
+	<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+	<script>
+	
+		document.getElementById("loginForm").addEventListener("submit", function (event){
+			event.preventDefault();
+			
+			let formData = {
+				username: document.getElementById("username").value,
+				password: document.getElementById("password").value
+			};
+			
+			fetch("/api/user/public/login", {
+			    method: "post",
+			    headers: {"Content-Type" : "application/json"},
+			    body: JSON.stringify(formData)
+			})
+			.then(response => {
+			    return response.json();
+			})
+			.then(data => {
+				
+				const existingErrorMessageDiv = document.getElementById("error-message");
+				if(existingErrorMessageDiv) existingErrorMessageDiv.remove();
+				
+				if(data.success){
+					document.cookie = `token=${data.token}; path=/; max-age=${data.expiration}; secure; SameSite=Strict`;
+				    window.location.href = "/user/center";
+				}else{
+					const errorMessageDiv = document.createElement("div");
+					errorMessageDiv.id = "error-message";
+					errorMessageDiv.innerText = data.errorMessage;
+					errorMessageDiv.classList.add("text-red-500");
+					errorMessageDiv.classList.add("p-1");
+					const loginForm = document.getElementById("loginForm");
+					loginForm.appendChild(errorMessageDiv);
+				}
+			})
+			.catch(error => {
+			    console.log("error during login: ", error);
+			});
+		});
+	</script>
+  </body>
+</html>

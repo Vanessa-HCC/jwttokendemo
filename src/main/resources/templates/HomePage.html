@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-hant-TW" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HOME</title>
+  </head>
+  <body>
+      <nav class="flex justify-between bg-amber-300 py-2">
+	    <div class="flex justify-center">
+	        <div class="m-2 px-4">FLAV</div>
+	        <div class="m-2 px-8">卡匣</div>
+	        <ul class="hidden">
+	            <li>建立單字卡</li>
+	            <li>整理卡匣</li>
+	        </ul>
+	        <div class="m-2 px-8">搜尋</div>
+	    </div>
+	    <a th:href="@{/login}" class="m-2 mr-4 ml-auto text-right">登入｜註冊</a>
+	  </nav>
+
+
+    <div class="ml-8 mr-8 mt-2 px-12 py-12 text-center border-amber-600 border">
+      <!-- 放圖片 -->
+      <button type="button" class="m-1 px-2 py-2 bg-amber-300 rounded-md">來建立自己的單字卡吧！</button>
+    </div>
+
+    <div class="m-2 flex justify-center">
+      <div class="mr-8 ml-8 mt-4 w-64 h-36 px-8 py-8 text-center border-amber-600 border">
+        <div class="text-lg font-semibold">建立單字卡</div>
+        <p>在這裡創造屬於自己的單字卡吧</p>
+      </div>
+      <div class="mr-8 ml-8 mt-4 w-64 h-36 px-8 py-8 text-center border-amber-600 border">
+        <div class="text-lg font-semibold">單字卡搜尋</div>
+        <p>探索記錄裡的單字卡</p>
+      </div>
+      <div class="mr-8 ml-8 mt-4 w-64 h-36 px-8 py-8 text-center border-amber-600 border">
+        <div class="text-lg font-semibold">整理卡匣</div>
+        <p>整理最適合自己使用的卡匣吧</p>
+      </div>
+    </div>
+
+    <footer class="p-2 bg-amber-300">
+	    <div class="mr-2 flex justify-end">
+	    	<a href=#>版權</a>
+			<span>｜</span>
+			<a href=#>隱私權政策</a>
+			<span>｜</span>
+			<a href=#>聯絡方式</a>
+	    </div>
+    </footer>
+    
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  </body>
+</html>
