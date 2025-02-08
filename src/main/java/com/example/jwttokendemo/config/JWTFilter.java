@@ -57,7 +57,7 @@ public class JWTFilter extends OncePerRequestFilter {
 			String username = jwtUtil.getUsernameFromJWT(token);
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 			setAuthentication(userDetails, request);
-			refreshTokenIdNeeded(token, response);
+			refreshTokenIfNeeded(token, response);
 		}else{
 		    SecurityContextHolder.clearContext();
 		}
@@ -71,7 +71,7 @@ public class JWTFilter extends OncePerRequestFilter {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 	
-	private void refreshTokenIdNeeded(String token, HttpServletResponse response) {
+	private void refreshTokenIfNeeded(String token, HttpServletResponse response) {
 		long expirationTime  = jwtUtil.getExpirationFromJWT(token).getTime();
 		long currentTime = System.currentTimeMillis();
 		long remainingTime = expirationTime - currentTime;

@@ -29,7 +29,7 @@ public class SecurityConfig{
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		http.csrf(csrf -> csrf.disable());
+		http.csrf(csrf -> csrf.disable()); // 開發用
 				
 //		http.formLogin().disable();
 		
@@ -38,11 +38,6 @@ public class SecurityConfig{
 		http.authorizeHttpRequests(auth -> 
 			auth.requestMatchers("/api/user/public/login", "/login", "/home").permitAll()
 				.anyRequest().authenticated());
-
-		
-		http.sessionManagement(sessionManagement -> 
-				sessionManagement.sessionConcurrency(sessionConcurrency ->
-					sessionConcurrency.maximumSessions(1).expiredUrl("/home")));
 
 		return http.build();
 	}
