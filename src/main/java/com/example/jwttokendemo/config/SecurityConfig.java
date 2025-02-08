@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,11 +19,9 @@ public class SecurityConfig{
 	
 	private Logger logger = Logger.getLogger(SecurityConfig.class.getName());
 	
-	private final CustomUserDetailsService customUserDetailsService;
 	private final JWTFilter jwtFilter;
 	
 	public SecurityConfig(CustomUserDetailsService customUserDetailsService, JWTFilter jwtFilter) {
-		this.customUserDetailsService = customUserDetailsService;
 		this.jwtFilter = jwtFilter;
 	}
 	
@@ -31,8 +29,6 @@ public class SecurityConfig{
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		http.csrf(csrf -> csrf.disable()); // 開發用
 				
-//		http.formLogin().disable();
-		
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		http.authorizeHttpRequests(auth -> 
@@ -43,11 +39,8 @@ public class SecurityConfig{
 	}
 	
 	@Bean
-	AuthenticationManager authManager(HttpSecurity http) throws Exception{
-		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-		authenticationManagerBuilder.userDetailsService(customUserDetailsService);
-//			.passwordEncoder(passwordEncoder());
-		return authenticationManagerBuilder.build();
+	AuthenticationManager authManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+		return authenticationConfiguration.getAuthenticationManager();
 	}
 
 	@Bean
